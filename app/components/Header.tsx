@@ -4,6 +4,7 @@ import { Moon, Sun, Menu, X } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 
 export default function Header() {
   const { theme, setTheme } = useTheme();
@@ -62,9 +63,16 @@ export default function Header() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => scrollToSection('hero')}
-            className="text-xl font-bold text-gray-900 dark:text-white"
+            className="flex items-center"
           >
-            Portfolio
+            <Image
+              src="/logo.svg"
+              alt="Portfolio Logo"
+              width={120}
+              height={40}
+              className="h-8 w-auto"
+              priority
+            />
           </motion.button>
 
           {/* Desktop Navigation */}
