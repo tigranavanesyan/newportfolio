@@ -5,6 +5,7 @@ import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { projects } from '@/data/projects';
 import { ExternalLink, Github } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Projects() {
   const ref = useRef(null);
@@ -43,9 +44,20 @@ export default function Projects() {
               className="bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all"
             >
               <div className="relative h-48 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600">
-                <div className="absolute inset-0 flex items-center justify-center text-4xl">
-                  🚀
-                </div>
+                {project.image ? (
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover object-center"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center text-4xl">
+                    🚀
+                  </div>
+                )}
+
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
