@@ -20,56 +20,47 @@ export const projects: Project[] = [
   },
   {
     id: '2',
-    title: 'Task Management App',
-    description: 'A collaborative task management application with real-time updates and team collaboration features.',
-    image: '',
-    technologies: ['React', 'TypeScript', 'Firebase', 'Material-UI'],
-    githubUrl: 'https://github.com',
-    liveUrl: 'https://example.com'
+    title: 'Blog Platform',
+    description: 'A content management system for blogging with markdown support and SEO optimization.',
+    image: '/demo2.png',
+    technologies: ['React', 'JavaScript', 'CSS Modules'],
+    githubUrl: 'https://github.com/tigranavanesyan/test',
+    liveUrl: 'https://test-five-beta-25.vercel.app/'
   },
   {
     id: '3',
-    title: 'Weather Dashboard',
-    description: 'A beautiful weather dashboard with location-based forecasts and interactive maps.',
-    image: '',
-    technologies: ['Vue.js', 'JavaScript', 'CSS3', 'OpenWeather API'],
-    githubUrl: 'https://github.com',
-    liveUrl: 'https://example.com'
+    title: 'Portfolio Website (This one)',
+    description: 'A modern, responsive portfolio website with animations and dark mode support.',
+    image: '/demo3.png',
+    technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
+    githubUrl: 'https://github.com/tigranavanesyan/newportfolio',
+    liveUrl: 'https://tigranavanesyan.vercel.app/'
   },
   {
     id: '4',
-    title: 'Social Media Dashboard',
-    description: 'Analytics dashboard for social media metrics with data visualization and reporting.',
-    image: '',
-    technologies: ['React', 'TypeScript', 'Chart.js', 'Express', 'PostgreSQL'],
-    githubUrl: 'https://github.com',
-    liveUrl: 'https://example.com'
+    title: 'Lingo Tool',
+    description: 'Language learning platform for learning languages with AI-powered translations and voice recognition.',
+    image: '/demo4.png',
+    technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'next-intl'],
+    githubUrl: '',
+    liveUrl: 'https://lingo-tool.com'
   },
   {
     id: '5',
-    title: 'Portfolio Website',
-    description: 'A modern, responsive portfolio website with animations and dark mode support.',
-    image: '',
-    technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
-    githubUrl: 'https://github.com',
-    liveUrl: 'https://example.com'
+    title: 'Bookmarking Tool',
+    description: 'A bookmarking tool for saving and organizing your favorite links.',
+    image: '/demo5.png',
+    technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'next-auth'],
+    githubUrl: '',
+    liveUrl: 'https://www.linkorium.com'
   },
   {
     id: '6',
-    title: 'Blog Platform',
-    description: 'A content management system for blogging with markdown support and SEO optimization.',
-    image: '',
-    technologies: ['Next.js', 'TypeScript', 'MDX', 'Prisma', 'PostgreSQL'],
-    githubUrl: 'https://github.com',
-    liveUrl: 'https://example.com'
-  },
-  {
-    id: '7',
-    title: 'E-Commerce Platform',
-    description: 'A full-featured e-commerce platform with shopping cart, payment integration, and admin dashboard.',
-    image: '',
-    technologies: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Node.js', 'MongoDB'],
-    githubUrl: 'https://github.com',
-    liveUrl: 'https://example.com'
-  },
+    title: 'Cave Lab',
+    description: 'A website for an educational institution',
+    image: '/demo6.png',
+    technologies: ['HTML', 'CSS', 'JavaScript'],
+    githubUrl: '',
+    liveUrl: 'https://cavelab.am/'
+  }
 ];

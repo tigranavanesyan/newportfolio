@@ -2,12 +2,16 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Mail, Github, Linkedin, Send } from 'lucide-react';
+
+type SubmitStatus = 'idle' | 'sending' | 'success' | 'error';
 
 export default function Contact() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const [status, setStatus] = useState<SubmitStatus>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const contactLinks = [
     {
@@ -86,9 +90,33 @@ export default function Contact() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           className="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-lg"
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
-            // Handle form submission
+            setErrorMessage('');
+            setStatus('sending');
+            const form = e.currentTarget;
+            const formData = new FormData(form);
+            const name = formData.get('name') as string;
+            const email = formData.get('email') as string;
+            const message = formData.get('message') as string;
+            try {
+              const res = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, message }),
+              });
+              const data = await res.json().catch(() => ({}));
+              if (!res.ok) {
+                setStatus('error');
+                setErrorMessage(data.error ?? 'Something went wrong');
+                return;
+              }
+              setStatus('success');
+              form.reset();
+            } catch {
+              setStatus('error');
+              setErrorMessage('Failed to send message');
+            }
           }}
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -138,14 +166,25 @@ export default function Contact() {
               required
             ></textarea>
           </div>
+          {status === 'success' && (
+            <p className="mb-4 text-sm text-green-600 dark:text-green-400">
+              Message sent! I&apos;ll get back to you soon.
+            </p>
+          )}
+          {status === 'error' && (
+            <p className="mb-4 text-sm text-red-600 dark:text-red-400">
+              {errorMessage}
+            </p>
+          )}
           <motion.button
             type="submit"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="w-full md:w-auto px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
+            disabled={status === 'sending'}
+            whileHover={status !== 'sending' ? { scale: 1.05 } : undefined}
+            whileTap={status !== 'sending' ? { scale: 0.95 } : undefined}
+            className="w-full md:w-auto px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
           >
             <Send size={20} />
-            Send Message
+            {status === 'sending' ? 'Sending...' : 'Send Message'}
           </motion.button>
         </motion.form>
       </div>
