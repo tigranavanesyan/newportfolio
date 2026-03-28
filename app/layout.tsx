@@ -1,5 +1,5 @@
 import { ThemeProvider } from './components/ThemeProvider';
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -13,12 +13,18 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const plusJakarta = Plus_Jakarta_Sans({
+  variable: "--font-heading",
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
+});
+
 export const metadata: Metadata = {
   title: {
-    default: "Portfolio - Fullstack Frontend Developer",
-    template: "%s | Portfolio"
+    default: "Tigran Avanesyan — Fullstack Frontend Developer",
+    template: "%s | Tigran Avanesyan"
   },
-  description: "I'm a passionate fullstack frontend developer with expertise in building scalable web applications. I specialize in creating intuitive user interfaces and robust backend systems.",
+  description: "Fullstack frontend developer building scalable web applications with a focus on user experience, performance, and clean interfaces.",
   keywords: [
     "fullstack developer",
     "frontend developer",
@@ -27,11 +33,12 @@ export const metadata: Metadata = {
     "Next.js developer",
     "TypeScript developer",
     "portfolio",
+    "Tigran Avanesyan",
     "software engineer"
   ],
-  authors: [{ name: "Portfolio Developer" }],
-  creator: "Portfolio Developer",
-  publisher: "Portfolio Developer",
+  authors: [{ name: "Tigran Avanesyan" }],
+  creator: "Tigran Avanesyan",
+  publisher: "Tigran Avanesyan",
   formatDetection: {
     email: false,
     address: false,
@@ -45,24 +52,23 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "/",
-    title: "Portfolio - Fullstack Frontend Developer",
-    description: "I'm a passionate fullstack frontend developer with expertise in building scalable web applications. I specialize in creating intuitive user interfaces and robust backend systems.",
-    siteName: "Portfolio",
+    title: "Tigran Avanesyan — Fullstack Frontend Developer",
+    description: "Fullstack frontend developer building scalable web applications with a focus on user experience and performance.",
+    siteName: "Tigran Avanesyan",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Portfolio - Fullstack Frontend Developer",
+        alt: "Tigran Avanesyan — Portfolio",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Portfolio - Fullstack Frontend Developer",
-    description: "I'm a passionate fullstack frontend developer with expertise in building scalable web applications.",
+    title: "Tigran Avanesyan — Fullstack Frontend Developer",
+    description: "Fullstack frontend developer building scalable web applications.",
     images: ["/og-image.jpg"],
-    creator: "@yourusername",
   },
   robots: {
     index: true,
@@ -90,7 +96,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${plusJakarta.variable} antialiased`}
       >
         <ThemeProvider>
           {children}

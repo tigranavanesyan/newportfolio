@@ -11,7 +11,7 @@ export default function Header() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    queueMicrotask(() => setMounted(true));
   }, []);
 
   const toggleTheme = () => {
@@ -53,21 +53,22 @@ export default function Header() {
       animate={{ y: 0 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-md'
+          ? 'border-b border-border bg-background/80 backdrop-blur-md shadow-sm'
           : 'bg-transparent'
       }`}
     >
-      <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+      <nav className="container mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main">
+        <div className="flex h-16 items-center justify-between">
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            type="button"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => scrollToSection('hero')}
-            className="flex items-center"
+            className="flex min-h-11 min-w-11 items-center rounded-lg"
           >
             <Image
               src="/logo.svg"
-              alt="Portfolio Logo"
+              alt="Home"
               width={120}
               height={40}
               className="h-8 w-auto"
@@ -75,57 +76,61 @@ export default function Header() {
             />
           </motion.button>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden items-center gap-1 rounded-full border border-border bg-card/80 p-1 shadow-sm backdrop-blur-sm md:flex">
             {navItems.map((item) => (
               <button
                 key={item.id}
+                type="button"
                 onClick={() => scrollToSection(item.id)}
-                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors font-medium"
+                className="rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
                 {item.label}
               </button>
             ))}
           </div>
 
-          {/* Controls */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             {mounted && (
               <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
+                type="button"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={toggleTheme}
-                className="p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                className="flex min-h-11 min-w-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                 aria-label="Toggle theme"
               >
                 {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
               </motion.button>
             )}
 
-            {/* Mobile Menu Button */}
             <button
+              type="button"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 text-gray-700 dark:text-gray-300"
+              className="flex min-h-11 min-w-11 items-center justify-center rounded-lg text-muted-foreground md:hidden"
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-nav"
+              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
+              id="mobile-nav"
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden py-4 space-y-2"
+              className="space-y-1 overflow-hidden border-t border-border py-4 md:hidden"
             >
               {navItems.map((item) => (
                 <button
                   key={item.id}
+                  type="button"
                   onClick={() => scrollToSection(item.id)}
-                  className="block w-full text-left px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
+                  className="block w-full rounded-lg px-4 py-3 text-left text-sm font-medium text-foreground transition-colors hover:bg-muted"
                 >
                   {item.label}
                 </button>

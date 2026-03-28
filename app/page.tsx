@@ -4,39 +4,46 @@ import About from './components/About';
 import Skills from './components/Skills';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
+import Footer from './components/Footer';
 import type { Metadata } from 'next';
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+
 export const metadata: Metadata = {
-  title: "Portfolio",
-  description: "Fullstack Frontend Developer - Creating modern, responsive web applications with a focus on user experience and performance.",
+  title: 'Portfolio',
+  description:
+    'Tigran Avanesyan — fullstack frontend developer. Modern, responsive web applications with a focus on user experience and performance.',
   openGraph: {
-    title: "Portfolio - Fullstack Frontend Developer",
-    description: "Creating modern, responsive web applications with a focus on user experience and performance.",
-    type: "website",
+    title: 'Tigran Avanesyan — Fullstack Frontend Developer',
+    description:
+      'Modern, responsive web applications with a focus on user experience and performance.',
+    type: 'website',
   },
 };
 
 export default function Home() {
   const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Portfolio Developer",
-    "jobTitle": "Fullstack Frontend Developer",
-    "description": "I'm a passionate fullstack frontend developer with expertise in building scalable web applications.",
-    "url": process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
-    "sameAs": [
-      "https://github.com",
-      "https://linkedin.com"
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Tigran Avanesyan',
+    jobTitle: 'Fullstack Frontend Developer',
+    description:
+      'Fullstack frontend developer building scalable web applications with a focus on user experience and performance.',
+    url: siteUrl,
+    sameAs: [
+      'https://github.com/tigranavanesyan',
+      'https://www.linkedin.com/in/tigran-avanesyan/',
     ],
-    "knowsAbout": [
-      "React",
-      "Next.js",
-      "TypeScript",
-      "JavaScript",
-      "Web Development",
-      "Frontend Development",
-      "Fullstack Development"
-    ]
+    email: 'web.tigranavanesyan@gmail.com',
+    knowsAbout: [
+      'React',
+      'Next.js',
+      'TypeScript',
+      'JavaScript',
+      'Web Development',
+      'Frontend Development',
+      'Fullstack Development',
+    ],
   };
 
   return (
@@ -45,12 +52,15 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Header />
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Contact />
+      <main>
+        <Header />
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <Contact />
+        <Footer />
+      </main>
     </>
   );
 }

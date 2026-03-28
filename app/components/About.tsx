@@ -5,6 +5,7 @@ import { useInView } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { Briefcase, Code2, Users, type LucideIcon } from 'lucide-react';
 import Image from 'next/image';
+import SectionHeader from './SectionHeader';
 
 function useCountUp(
   end: number,
@@ -18,9 +19,9 @@ function useCountUp(
   useEffect(() => {
     if (!enabled) return;
 
-    setCount(0);
+    // Reset before replay when deps change (e.g. strict mode remount)
+    queueMicrotask(() => setCount(0));
     let startTime: number | null = null;
-    let delayTimeout: ReturnType<typeof setTimeout>;
 
     const run = () => {
       const animate = (timestamp: number) => {
@@ -38,7 +39,7 @@ function useCountUp(
       rafRef.current = requestAnimationFrame(animate);
     };
 
-    delayTimeout = setTimeout(run, startDelayMs);
+    const delayTimeout = setTimeout(run, startDelayMs);
 
     return () => {
       clearTimeout(delayTimeout);
@@ -68,18 +69,18 @@ function StatCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-      transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-      className="group text-center p-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+      initial={{ opacity: 0, scale: 0.96 }}
+      animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.96 }}
+      transition={{ duration: 0.45, delay: 0.35 + index * 0.08 }}
+      className="group rounded-2xl border border-border bg-card p-8 text-center shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/30 hover:shadow-md"
     >
-      <div className="inline-flex p-3 mb-4 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 group-hover:scale-110 transition-transform duration-300">
-        <stat.icon className="w-8 h-8 text-white" />
+      <div className="mb-4 inline-flex rounded-xl bg-accent p-3 text-accent-foreground transition-transform duration-300 group-hover:scale-105">
+        <stat.icon className="h-8 w-8" aria-hidden />
       </div>
-      <div className="text-5xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent mb-3 tabular-nums">
+      <div className="mb-2 text-5xl font-bold tabular-nums text-foreground">
         {count}+
       </div>
-      <div className="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+      <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
         {stat.label}
       </div>
     </motion.div>
@@ -91,63 +92,74 @@ export default function About() {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   const stats = [
-    { icon: Briefcase, end: 4, label: 'Years of Experience' },
-    { icon: Code2, end: 50, label: 'Projects Completed' },
-    { icon: Users, end: 30, label: 'Happy Clients' },
+    { icon: Briefcase, end: 4, label: 'Years of experience' },
+    { icon: Code2, end: 50, label: 'Projects completed' },
+    { icon: Users, end: 30, label: 'Happy clients' },
   ] as const;
 
   return (
     <section
       id="about"
       ref={ref}
-      className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900"
+      className="bg-background px-4 py-20 sm:px-6 lg:px-8"
     >
       <div className="container mx-auto max-w-6xl">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          transition={{ duration: 0.55 }}
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            About Me
-          </h2>
-          <div className="w-24 h-1 bg-gray-900 dark:bg-white mx-auto"></div>
+          <SectionHeader
+            eyebrow="About"
+            title="Who I am"
+            subtitle="I combine frontend craft with solid backend fundamentals to ship products end to end."
+          />
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center mb-16">
+        <div className="mb-16 grid items-center gap-12 md:grid-cols-2 lg:gap-16">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="space-y-6 order-2 md:order-1"
+            initial={{ opacity: 0, x: -36 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -36 }}
+            transition={{ duration: 0.55, delay: 0.1 }}
+            className="order-2 space-y-6 md:order-1"
           >
-            <div className="space-y-4">
-              <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed font-light">
-                I'm a passionate <span className="font-semibold text-gray-900 dark:text-white">fullstack frontend developer</span> with expertise in building scalable web applications.
+            <div className="max-w-prose space-y-5">
+              <p className="text-lg font-light leading-relaxed text-foreground md:text-xl">
+                I&apos;m a passionate{' '}
+                <span className="font-semibold">fullstack frontend developer</span>{' '}
+                with experience building scalable web applications.
               </p>
-              <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed font-light">
-                I specialize in creating <span className="font-semibold text-gray-900 dark:text-white">intuitive user interfaces</span> and <span className="font-semibold text-gray-900 dark:text-white">robust backend systems</span>.
+              <p className="text-lg font-light leading-relaxed text-muted-foreground md:text-xl">
+                I focus on{' '}
+                <span className="font-medium text-foreground">
+                  intuitive interfaces
+                </span>{' '}
+                and{' '}
+                <span className="font-medium text-foreground">
+                  reliable systems
+                </span>{' '}
+                — from design polish to API design and deployment.
               </p>
             </div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="relative order-1 md:order-2 flex justify-center md:justify-end"
+            initial={{ opacity: 0, x: 36 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 36 }}
+            transition={{ duration: 0.55, delay: 0.15 }}
+            className="relative order-1 flex justify-center md:order-2 md:justify-end"
           >
             <div className="relative w-full max-w-md">
-              {/* Decorative background elements */}
-              <div className="absolute -inset-4 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 dark:from-blue-400/10 dark:via-purple-400/10 dark:to-pink-400/10 rounded-2xl blur-2xl"></div>
-              
-              {/* Main image container */}
-              <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-4 shadow-2xl">
-                <div className="relative aspect-[3/4] w-full rounded-xl overflow-hidden">
-                  <Image 
-                    src="/Tigran.png" 
-                    alt="About" 
+              <div
+                className="absolute -inset-3 rounded-3xl bg-gradient-to-br from-accent/20 to-accent/5 blur-2xl dark:from-accent/10 dark:to-transparent"
+                aria-hidden
+              />
+
+              <div className="relative rounded-2xl border border-border bg-card p-3 shadow-lg">
+                <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl">
+                  <Image
+                    src="/Tigran.png"
+                    alt="Tigran Avanesyan, fullstack developer"
                     fill
                     className="object-cover object-center"
                     sizes="(max-width: 768px) 100vw, 400px"
@@ -158,14 +170,18 @@ export default function About() {
           </motion.div>
         </div>
 
+        <p className="mb-8 text-center text-sm text-muted-foreground">
+          Figures are approximate and reflect career highlights to date.
+        </p>
+
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8"
+          initial={{ opacity: 0, y: 36 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 36 }}
+          transition={{ duration: 0.55, delay: 0.2 }}
+          className="grid grid-cols-1 gap-6 sm:grid-cols-3 lg:gap-8"
         >
           {stats.map((stat, index) => (
-            <StatCard key={index} stat={stat} isInView={isInView} index={index} />
+            <StatCard key={stat.label} stat={stat} isInView={isInView} index={index} />
           ))}
         </motion.div>
       </div>
