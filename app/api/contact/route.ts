@@ -6,6 +6,15 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? 'onboarding@resend.dev';
 const TO_EMAIL = process.env.RESEND_TO_EMAIL ?? 'web.tigranavanesyan@gmail.com';
 
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -25,16 +34,20 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const safeName = escapeHtml(name.trim());
+    const safeEmail = escapeHtml(email.trim());
+    const safeMessage = escapeHtml(message.trim()).replace(/\n/g, '<br>');
+
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: TO_EMAIL,
-      replyTo: email,
-      subject: `Portfolio contact from ${name}`,
+      replyTo: email.trim(),
+      subject: `Portfolio contact from ${name.trim()}`,
       html: `
         <h2>New message from your portfolio</h2>
-        <p><strong>From:</strong> ${name} &lt;${email}&gt;</p>
+        <p><strong>From:</strong> ${safeName} &lt;${safeEmail}&gt;</p>
         <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, '<br>')}</p>
+        <p>${safeMessage}</p>
       `,
     });
 

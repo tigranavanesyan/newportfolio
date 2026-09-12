@@ -2,33 +2,33 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Semantic tokens — single source of truth for light / dark */
+/* Alpine atelier — cold stone, basalt, lake */
 :root {
-  --background: #fafafa;
-  --foreground: #18181b;
-  --muted: #f4f4f5;
-  --muted-foreground: #71717a;
-  --border: #e4e4e7;
-  --card: #ffffff;
-  --card-foreground: #18181b;
-  --accent: #2563eb;
-  --accent-muted: #dbeafe;
-  --accent-foreground: #ffffff;
-  --ring: #2563eb;
+  --background: #e8edf0;
+  --foreground: #1b2228;
+  --muted: #dde3e8;
+  --muted-foreground: #5c6770;
+  --border: #c5ced6;
+  --card: #f4f6f8;
+  --card-foreground: #1b2228;
+  --accent: #2b6b7a;
+  --accent-muted: #c5d9de;
+  --accent-foreground: #f4f6f8;
+  --ring: #2b6b7a;
 }
 
 .dark {
-  --background: #0a0a0a;
-  --foreground: #fafafa;
-  --muted: #18181b;
-  --muted-foreground: #a1a1aa;
-  --border: #27272a;
-  --card: #121212;
-  --card-foreground: #fafafa;
-  --accent: #3b82f6;
-  --accent-muted: #1e3a5f;
-  --accent-foreground: #ffffff;
-  --ring: #60a5fa;
+  --background: #0f1418;
+  --foreground: #e8edf0;
+  --muted: #1a2228;
+  --muted-foreground: #8b969e;
+  --border: #2a343c;
+  --card: #161d22;
+  --card-foreground: #e8edf0;
+  --accent: #4a9aab;
+  --accent-muted: #1a3338;
+  --accent-foreground: #0f1418;
+  --ring: #4a9aab;
 }
 
 @theme inline {
@@ -43,6 +43,8 @@
   --color-accent-muted: var(--accent-muted);
   --color-accent-foreground: var(--accent-foreground);
   --color-ring: var(--ring);
+  --font-sans: var(--font-plex-sans), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
 }
 
 html {
@@ -58,18 +60,36 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-plex-sans), system-ui, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .font-heading {
-  font-family: var(--font-heading), var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-heading), var(--font-plex-sans), system-ui, sans-serif;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  z-index: 100;
+  transform: translateY(-200%);
+  border-radius: 0.25rem;
+  background: var(--foreground);
+  color: var(--background);
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
 }
 
 #hero,
 #about,
 #skills,
-#projects,
+#work,
 #contact {
   scroll-margin-top: 5rem;
 }

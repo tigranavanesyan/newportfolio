@@ -9,25 +9,23 @@ export default function SectionHeader({
   eyebrow,
   title,
   subtitle,
-  align = 'center',
+  align = 'left',
 }: SectionHeaderProps) {
   const alignClass = align === 'center' ? 'text-center' : 'text-left';
-  const barClass =
-    align === 'center' ? 'mx-auto' : '';
 
   return (
     <div className={`mb-12 md:mb-16 ${alignClass}`}>
       {eyebrow ? (
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-3">
+        <p className="font-mono mb-3 text-xs uppercase tracking-[0.18em] text-accent">
           {eyebrow}
         </p>
       ) : null}
-      <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 tracking-tight">
+      <h2 className="font-heading mb-4 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl md:text-5xl">
         {title}
       </h2>
       {subtitle ? (
         <p
-          className={`text-lg text-muted-foreground mb-6 max-w-2xl leading-relaxed ${
+          className={`max-w-2xl text-lg leading-relaxed text-muted-foreground ${
             align === 'center' ? 'mx-auto' : ''
           }`}
         >
@@ -35,7 +33,7 @@ export default function SectionHeader({
         </p>
       ) : null}
       <div
-        className={`h-1 w-12 rounded-full bg-accent ${barClass}`}
+        className={`mt-6 h-px w-10 bg-accent ${align === 'center' ? 'mx-auto' : ''}`}
         aria-hidden
       />
     </div>

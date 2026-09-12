@@ -4,123 +4,88 @@ import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { projects } from '@/data/projects';
-import { ExternalLink, Github, LayoutGrid } from 'lucide-react';
+import { ExternalLink, Github } from 'lucide-react';
 import Image from 'next/image';
 import SectionHeader from './SectionHeader';
-
-function ProjectImagePlaceholder({ title }: { title: string }) {
-  const initial = title
-    .split(' ')
-    .map((w) => w[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase();
-
-  return (
-    <div className="flex h-full min-h-[12rem] w-full flex-col items-center justify-center gap-2 bg-muted">
-      <LayoutGrid className="h-10 w-10 text-muted-foreground" aria-hidden />
-      <span className="font-heading text-2xl font-bold tracking-tight text-muted-foreground">
-        {initial}
-      </span>
-    </div>
-  );
-}
 
 export default function Projects() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const featured = projects.filter((project) => project.featured);
+  const more = projects.filter((project) => !project.featured);
 
   return (
     <section
-      id="projects"
+      id="work"
       ref={ref}
-      className="bg-background px-4 py-20 sm:px-6 lg:px-8"
+      className="bg-background px-4 py-24 sm:px-6 lg:px-8"
     >
       <div className="container mx-auto max-w-6xl">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-          transition={{ duration: 0.55 }}
+          initial={false}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 1, y: 16 }}
+          transition={{ duration: 0.5 }}
         >
           <SectionHeader
             eyebrow="Work"
-            title="Projects"
-            subtitle="A selection of recent builds — from marketing sites to full platforms."
+            title="Selected products"
+            subtitle="Shipped work first. Smaller experiments sit below."
           />
         </motion.div>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project, index) => (
+        <div className="space-y-16 md:space-y-24">
+          {featured.map((project, index) => (
             <motion.article
               key={project.id}
-              initial={{ opacity: 0, y: 36 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 36 }}
-              transition={{ duration: 0.5, delay: index * 0.08 }}
-              whileHover={{ y: -6 }}
-              className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-lg"
+              initial={false}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 1, y: 16 }}
+              transition={{ duration: 0.5, delay: 0.08 + index * 0.06 }}
+              className="grid items-start gap-8 lg:grid-cols-12 lg:gap-12"
             >
-              <div className="relative aspect-[16/10] overflow-hidden bg-muted">
-                {project.image ? (
-                  <>
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div
-                      className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                      aria-hidden
-                    />
-                    <div className="absolute inset-x-0 bottom-0 flex translate-y-full flex-wrap gap-2 p-4 transition-transform duration-300 group-hover:translate-y-0">
-                      {project.githubUrl ? (
-                        <a
-                          href={project.githubUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 rounded-lg bg-card px-3 py-1.5 text-xs font-medium text-foreground shadow-md ring-1 ring-border"
-                        >
-                          <Github size={14} aria-hidden />
-                          Code
-                        </a>
-                      ) : null}
-                      {project.liveUrl ? (
-                        <a
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-xs font-semibold text-accent-foreground shadow-md"
-                        >
-                          <ExternalLink size={14} aria-hidden />
-                          Live
-                        </a>
-                      ) : null}
-                    </div>
-                  </>
-                ) : (
-                  <ProjectImagePlaceholder title={project.title} />
-                )}
+              <div className="relative aspect-[16/10] overflow-hidden rounded-sm border border-border bg-muted lg:col-span-7">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 58vw"
+                  className="object-cover object-top"
+                />
               </div>
 
-              <div className="flex flex-1 flex-col p-6">
-                <h3 className="font-heading text-xl font-bold text-foreground">
+              <div className="flex flex-col lg:col-span-5 lg:pt-2">
+                {project.role ? (
+                  <p className="font-mono text-xs uppercase tracking-[0.16em] text-accent">
+                    {project.role}
+                  </p>
+                ) : null}
+                <h3 className="font-heading mt-3 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
                   {project.title}
                 </h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
+                <p className="mt-4 text-base leading-relaxed text-muted-foreground">
                   {project.description}
                 </p>
-                <div className="mt-4 flex flex-wrap gap-2">
+                <ul className="mt-5 flex flex-wrap gap-2">
                   {project.technologies.map((tech) => (
-                    <span
+                    <li
                       key={tech}
-                      className="rounded-md border border-border bg-muted/50 px-2 py-1 text-xs font-medium text-muted-foreground"
+                      className="border border-border px-2.5 py-1 text-xs text-muted-foreground"
                     >
                       {tech}
-                    </span>
+                    </li>
                   ))}
-                </div>
-                <div className="mt-5 flex flex-wrap gap-4 border-t border-border pt-4">
+                </ul>
+                <div className="mt-6 flex flex-wrap gap-5">
+                  {project.liveUrl ? (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm font-medium text-foreground transition-colors hover:text-accent"
+                    >
+                      <ExternalLink size={16} aria-hidden />
+                      Live
+                    </a>
+                  ) : null}
                   {project.githubUrl ? (
                     <a
                       href={project.githubUrl}
@@ -128,19 +93,8 @@ export default function Projects() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
                     >
-                      <Github size={18} aria-hidden />
-                      View code
-                    </a>
-                  ) : null}
-                  {project.liveUrl ? (
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
-                    >
-                      <ExternalLink size={18} aria-hidden />
-                      Live demo
+                      <Github size={16} aria-hidden />
+                      Code
                     </a>
                   ) : null}
                 </div>
@@ -148,6 +102,58 @@ export default function Projects() {
             </motion.article>
           ))}
         </div>
+
+        {more.length > 0 ? (
+          <motion.div
+            initial={false}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 1, y: 16 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="mt-20 border-t border-border pt-12"
+          >
+            <h3 className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">
+              More
+            </h3>
+            <ul className="mt-6 divide-y divide-border">
+              {more.map((project) => (
+                <li
+                  key={project.id}
+                  className="flex flex-col gap-3 py-5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8"
+                >
+                  <div className="min-w-0">
+                    <p className="font-heading text-lg font-semibold text-foreground">
+                      {project.title}
+                    </p>
+                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                      {project.description}
+                    </p>
+                  </div>
+                  <div className="flex shrink-0 flex-wrap items-center gap-4 text-sm">
+                    {project.liveUrl ? (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium text-foreground transition-colors hover:text-accent"
+                      >
+                        Live
+                      </a>
+                    ) : null}
+                    {project.githubUrl ? (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground transition-colors hover:text-accent"
+                      >
+                        Code
+                      </a>
+                    ) : null}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        ) : null}
       </div>
     </section>
   );

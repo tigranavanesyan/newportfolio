@@ -1,11 +1,8 @@
 'use client';
 
-import { Github, Linkedin, Mail } from 'lucide-react';
-
 const navItems = [
+  { id: 'work', label: 'Work' },
   { id: 'about', label: 'About' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'projects', label: 'Projects' },
   { id: 'contact', label: 'Contact' },
 ];
 
@@ -20,15 +17,15 @@ export default function Footer() {
   };
 
   return (
-    <footer className="border-t border-border bg-muted/50">
-      <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex flex-col gap-10 md:flex-row md:items-center md:justify-between">
+    <footer className="border-t border-border bg-muted/40">
+      <div className="container mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div>
-            <p className="font-heading text-lg font-semibold text-foreground">
+            <p className="font-heading text-base font-semibold text-foreground">
               Tigran Avanesyan
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
-              Fullstack developer · © {year}
+              Fullstack frontend developer · © {year}
             </p>
           </div>
 
@@ -48,31 +45,28 @@ export default function Footer() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-5 text-sm">
             <a
               href="mailto:web.tigranavanesyan@gmail.com"
-              className="rounded-lg p-2 text-muted-foreground transition-colors hover:text-accent"
-              aria-label="Email"
+              className="text-muted-foreground transition-colors hover:text-accent"
             >
-              <Mail size={20} />
+              Email
             </a>
             <a
               href="https://github.com/tigranavanesyan"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-lg p-2 text-muted-foreground transition-colors hover:text-accent"
-              aria-label="GitHub"
+              className="text-muted-foreground transition-colors hover:text-accent"
             >
-              <Github size={20} />
+              GitHub
             </a>
             <a
               href="https://www.linkedin.com/in/tigran-avanesyan/"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-lg p-2 text-muted-foreground transition-colors hover:text-accent"
-              aria-label="LinkedIn"
+              className="text-muted-foreground transition-colors hover:text-accent"
             >
-              <Linkedin size={20} />
+              LinkedIn
             </a>
           </div>
         </div>

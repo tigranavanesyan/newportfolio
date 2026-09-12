@@ -10,13 +10,12 @@ import type { Metadata } from 'next';
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
 export const metadata: Metadata = {
-  title: 'Portfolio',
   description:
-    'Tigran Avanesyan — fullstack frontend developer. Modern, responsive web applications with a focus on user experience and performance.',
+    'Tigran Avanesyan — fullstack frontend developer. I design and ship web products end to end.',
   openGraph: {
     title: 'Tigran Avanesyan — Fullstack Frontend Developer',
     description:
-      'Modern, responsive web applications with a focus on user experience and performance.',
+      'I design and ship web products end to end — frontend craft with enough backend to take a product live.',
     type: 'website',
   },
 };
@@ -28,7 +27,7 @@ export default function Home() {
     name: 'Tigran Avanesyan',
     jobTitle: 'Fullstack Frontend Developer',
     description:
-      'Fullstack frontend developer building scalable web applications with a focus on user experience and performance.',
+      'Fullstack frontend developer who designs and ships web products end to end.',
     url: siteUrl,
     sameAs: [
       'https://github.com/tigranavanesyan',
@@ -52,12 +51,12 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <main>
+      <main id="main">
         <Header />
         <Hero />
         <About />
-        <Skills />
         <Projects />
+        <Skills />
         <Contact />
         <Footer />
       </main>
