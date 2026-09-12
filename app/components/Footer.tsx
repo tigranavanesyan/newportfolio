@@ -1,11 +1,19 @@
+import { cacheLife } from 'next/cache';
+
 const navItems = [
   { id: 'work', label: 'Work' },
   { id: 'about', label: 'About' },
   { id: 'contact', label: 'Contact' },
 ];
 
-export default function Footer() {
-  const year = new Date().getFullYear();
+async function getCurrentYear() {
+  'use cache';
+  cacheLife('max');
+  return new Date().getFullYear();
+}
+
+export default async function Footer() {
+  const year = await getCurrentYear();
 
   return (
     <footer className="border-t border-border bg-muted/40">
