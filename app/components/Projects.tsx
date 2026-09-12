@@ -17,7 +17,7 @@ export default function Projects() {
         />
 
         <div className="space-y-16 md:space-y-24">
-          {featured.map((project) => (
+          {featured.map((project, index) => (
             <article
               key={project.id}
               className="grid items-start gap-8 lg:grid-cols-12 lg:gap-12"
@@ -30,6 +30,8 @@ export default function Projects() {
                   quality={80}
                   sizes="(max-width: 1024px) 100vw, 58vw"
                   className="object-cover object-top"
+                  loading="eager"
+                  priority={index === 0}
                 />
               </div>
 

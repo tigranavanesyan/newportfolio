@@ -2,7 +2,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-screen items-center px-4 pt-24 pb-20 sm:px-6 lg:px-8"
+      className="relative flex min-h-dvh items-center px-4 pt-24 pb-20 sm:px-6 lg:px-8"
     >
       <div
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_0%_0%,var(--accent-muted),transparent_60%)]"
@@ -23,7 +23,7 @@ export default function Hero() {
           to deploy.
         </p>
 
-        <div className="mt-12 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+        <div className="mt-12 flex w-full max-w-sm flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:items-center sm:gap-4">
           <a
             href="#work"
             className="inline-flex min-h-12 items-center justify-center rounded-sm bg-accent px-7 py-3 text-sm font-medium text-accent-foreground"

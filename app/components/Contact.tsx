@@ -29,7 +29,7 @@ export default function Contact() {
             />
             <a
               href="mailto:web.tigranavanesyan@gmail.com"
-              className="text-sm font-medium text-foreground underline-offset-4 transition-colors hover:text-accent hover:underline"
+              className="break-all text-sm font-medium text-foreground underline-offset-4 transition-colors hover:text-accent hover:underline"
             >
               web.tigranavanesyan@gmail.com
             </a>

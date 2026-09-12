@@ -26,8 +26,8 @@ export default function About() {
           </div>
 
           <div className="relative order-1 flex justify-center md:order-2 md:justify-end">
-            <div className="relative w-full max-w-sm overflow-hidden rounded-sm border border-border bg-card">
-              <div className="relative aspect-[3/4] w-full">
+            <div className="relative w-full max-w-xs overflow-hidden rounded-sm border border-border bg-card sm:max-w-sm">
+              <div className="relative aspect-[4/5] w-full md:aspect-[3/4]">
                 <Image
                   src="/Tigran.png"
                   alt="Tigran Avanesyan, fullstack developer"

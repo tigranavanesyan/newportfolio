@@ -5,8 +5,9 @@ import { useTheme } from 'next-themes';
 import { useState, useEffect, useRef } from 'react';
 
 const navItems = [
-  { id: 'work', label: 'Work' },
   { id: 'about', label: 'About' },
+  { id: 'work', label: 'Work' },
+  { id: 'skills', label: 'Skills' },
   { id: 'contact', label: 'Contact' },
 ];
 
@@ -31,48 +32,80 @@ export default function Header() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
+    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    const closeOnDesktop = () => {
+      if (mq.matches) setIsMenuOpen(false);
+    };
+    mq.addEventListener('change', closeOnDesktop);
+    return () => mq.removeEventListener('change', closeOnDesktop);
+  }, []);
+
+  useEffect(() => {
     const ids = navItems.map((item) => item.id);
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0]?.target.id) {
-          setActive(visible[0].target.id);
+
+    const syncFromScroll = () => {
+      const header = document.querySelector('header');
+      const marker = (header?.getBoundingClientRect().bottom ?? 64) + 8;
+      let current = '';
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= marker) {
+          current = id;
         }
-      },
-      { rootMargin: '-28% 0px -55% 0px', threshold: [0, 0.2, 0.45] }
-    );
+      }
+      setActive(current);
+    };
 
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
+    const syncFromHash = () => {
+      const id = window.location.hash.slice(1);
+      if (ids.includes(id)) setActive(id);
+    };
 
-    return () => observer.disconnect();
+    syncFromHash();
+    syncFromScroll();
+    window.addEventListener('hashchange', syncFromHash);
+    window.addEventListener('scroll', syncFromScroll, { passive: true });
+    return () => {
+      window.removeEventListener('hashchange', syncFromHash);
+      window.removeEventListener('scroll', syncFromScroll);
+    };
   }, []);
 
   useEffect(() => {
     if (!isMenuOpen) {
       if (wasOpen.current) {
-        menuButtonRef.current?.focus();
+        menuButtonRef.current?.focus({ preventScroll: true });
       }
       wasOpen.current = false;
       return;
     }
 
     wasOpen.current = true;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    const html = document.documentElement;
+    const body = document.body;
+    const previousHtmlOverflow = html.style.overflow;
+    const previousBodyOverflow = body.style.overflow;
+    const previousOverscroll = html.style.overscrollBehavior;
+
+    html.style.overflow = 'hidden';
+    html.style.overscrollBehavior = 'none';
+    body.style.overflow = 'hidden';
+
+    const preventScroll = (event: Event) => {
+      event.preventDefault();
+    };
+    document.addEventListener('touchmove', preventScroll, { passive: false });
+    document.addEventListener('wheel', preventScroll, { passive: false });
 
     const menu = menuRef.current;
     const firstLink = menu?.querySelector<HTMLElement>('a[href]');
-    queueMicrotask(() => firstLink?.focus());
+    queueMicrotask(() => firstLink?.focus({ preventScroll: true }));
 
     const getFocusable = () => {
       const inMenu = menu
@@ -106,7 +139,11 @@ export default function Header() {
 
     window.addEventListener('keydown', onKey);
     return () => {
-      document.body.style.overflow = previousOverflow;
+      html.style.overflow = previousHtmlOverflow;
+      html.style.overscrollBehavior = previousOverscroll;
+      body.style.overflow = previousBodyOverflow;
+      document.removeEventListener('touchmove', preventScroll);
+      document.removeEventListener('wheel', preventScroll);
       window.removeEventListener('keydown', onKey);
     };
   }, [isMenuOpen]);
@@ -121,11 +158,23 @@ export default function Header() {
       : 'Switch to dark theme';
 
   return (
+    <>
+    {isMenuOpen ? (
+      <button
+        type="button"
+        tabIndex={-1}
+        aria-label="Close menu"
+        className="fixed inset-0 z-40 bg-background/55 backdrop-blur-md md:hidden"
+        onClick={() => setIsMenuOpen(false)}
+      />
+    ) : null}
     <header
-      className={`site-header fixed top-0 right-0 left-0 z-50 transition-colors duration-300 ${
-        scrolled
-          ? 'border-b border-border bg-background/85 backdrop-blur-md'
-          : 'bg-transparent'
+      className={`site-header fixed top-0 right-0 left-0 z-50 border-b transition-colors duration-300 ${
+        isMenuOpen
+          ? 'border-border bg-background'
+          : scrolled
+            ? 'border-border bg-background/85 backdrop-blur-md'
+            : 'border-transparent bg-transparent'
       }`}
     >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main">
@@ -133,7 +182,7 @@ export default function Header() {
           <a
             href="#hero"
             aria-label="Home"
-            className="font-heading min-h-11 text-sm font-semibold tracking-tight text-foreground sm:text-base"
+            className="font-heading inline-flex min-h-11 items-center leading-none text-sm font-semibold tracking-tight text-foreground sm:text-base"
           >
             Tigran Avanesyan
           </a>
@@ -144,6 +193,7 @@ export default function Header() {
                 key={item.id}
                 href={`#${item.id}`}
                 aria-current={active === item.id ? 'true' : undefined}
+                onClick={() => setActive(item.id)}
                 className={`rounded-sm px-3 py-2 text-sm font-medium transition-colors ${
                   active === item.id
                     ? 'text-foreground'
@@ -203,7 +253,10 @@ export default function Header() {
                   key={item.id}
                   href={`#${item.id}`}
                   aria-current={active === item.id ? 'true' : undefined}
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={() => {
+                    setActive(item.id);
+                    setIsMenuOpen(false);
+                  }}
                   className={`block w-full rounded-sm px-4 py-3 text-left text-sm font-medium transition-colors hover:bg-muted ${
                     active === item.id
                       ? 'text-foreground'
@@ -218,5 +271,6 @@ export default function Header() {
         </div>
       </nav>
     </header>
+    </>
   );
 }

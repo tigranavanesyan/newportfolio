@@ -16,7 +16,7 @@ export default async function Footer() {
   const year = await getCurrentYear();
 
   return (
-    <footer className="border-t border-border bg-muted/40">
+    <footer className="border-t border-border bg-muted/40 pb-[env(safe-area-inset-bottom)]">
       <div className="container mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div>

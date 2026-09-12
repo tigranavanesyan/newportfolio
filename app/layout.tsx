@@ -1,6 +1,6 @@
 import { ThemeProvider } from './components/ThemeProvider';
 import { Syne, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -20,6 +20,17 @@ const syne = Syne({
   subsets: ["latin"],
   weight: ["600", "700"],
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  colorScheme: "light dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#e8edf0" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f1418" },
+  ],
+};
 
 export const metadata: Metadata = {
   title: {
