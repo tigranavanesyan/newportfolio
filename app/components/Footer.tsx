@@ -1,5 +1,3 @@
-'use client';
-
 const navItems = [
   { id: 'work', label: 'Work' },
   { id: 'about', label: 'About' },
@@ -8,13 +6,6 @@ const navItems = [
 
 export default function Footer() {
   const year = new Date().getFullYear();
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   return (
     <footer className="border-t border-border bg-muted/40">
@@ -34,14 +25,13 @@ export default function Footer() {
             aria-label="Footer navigation"
           >
             {navItems.map((item) => (
-              <button
+              <a
                 key={item.id}
-                type="button"
-                onClick={() => scrollToSection(item.id)}
+                href={`#${item.id}`}
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
                 {item.label}
-              </button>
+              </a>
             ))}
           </nav>
 
@@ -59,6 +49,7 @@ export default function Footer() {
               className="text-muted-foreground transition-colors hover:text-accent"
             >
               GitHub
+              <span className="sr-only"> (opens in a new tab)</span>
             </a>
             <a
               href="https://www.linkedin.com/in/tigran-avanesyan/"
@@ -67,6 +58,7 @@ export default function Footer() {
               className="text-muted-foreground transition-colors hover:text-accent"
             >
               LinkedIn
+              <span className="sr-only"> (opens in a new tab)</span>
             </a>
           </div>
         </div>

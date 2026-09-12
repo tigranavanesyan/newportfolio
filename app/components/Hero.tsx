@@ -26,13 +26,13 @@ export default function Hero() {
         <div className="mt-12 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
           <a
             href="#work"
-            className="inline-flex min-h-12 items-center justify-center rounded-sm bg-accent px-7 py-3 text-sm font-semibold text-accent-foreground"
+            className="inline-flex min-h-12 items-center justify-center rounded-sm bg-accent px-7 py-3 text-sm font-medium text-accent-foreground"
           >
             View work
           </a>
           <a
             href="#contact"
-            className="inline-flex min-h-12 items-center justify-center rounded-sm border border-border px-7 py-3 text-sm font-semibold text-foreground transition-colors hover:border-accent hover:text-accent"
+            className="inline-flex min-h-12 items-center justify-center rounded-sm border border-border px-7 py-3 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent"
           >
             Email
           </a>

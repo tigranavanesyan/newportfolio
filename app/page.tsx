@@ -51,15 +51,15 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <Header />
       <main id="main">
-        <Header />
         <Hero />
         <About />
         <Projects />
         <Skills />
         <Contact />
-        <Footer />
       </main>
+      <Footer />
     </>
   );
 }

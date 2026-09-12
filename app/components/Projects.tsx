@@ -1,52 +1,33 @@
-'use client';
-
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef } from 'react';
 import { projects } from '@/data/projects';
 import { ExternalLink, Github } from 'lucide-react';
 import Image from 'next/image';
 import SectionHeader from './SectionHeader';
 
 export default function Projects() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
   const featured = projects.filter((project) => project.featured);
   const more = projects.filter((project) => !project.featured);
 
   return (
-    <section
-      id="work"
-      ref={ref}
-      className="bg-background px-4 py-24 sm:px-6 lg:px-8"
-    >
+    <section id="work" className="bg-background px-4 py-24 sm:px-6 lg:px-8">
       <div className="container mx-auto max-w-6xl">
-        <motion.div
-          initial={false}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 1, y: 16 }}
-          transition={{ duration: 0.5 }}
-        >
-          <SectionHeader
-            eyebrow="Work"
-            title="Selected products"
-            subtitle="Shipped work first. Smaller experiments sit below."
-          />
-        </motion.div>
+        <SectionHeader
+          eyebrow="Work"
+          title="Selected products"
+          subtitle="Shipped work first. Smaller experiments sit below."
+        />
 
         <div className="space-y-16 md:space-y-24">
-          {featured.map((project, index) => (
-            <motion.article
+          {featured.map((project) => (
+            <article
               key={project.id}
-              initial={false}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 1, y: 16 }}
-              transition={{ duration: 0.5, delay: 0.08 + index * 0.06 }}
               className="grid items-start gap-8 lg:grid-cols-12 lg:gap-12"
             >
               <div className="relative aspect-[16/10] overflow-hidden rounded-sm border border-border bg-muted lg:col-span-7">
                 <Image
                   src={project.image}
-                  alt={project.title}
+                  alt={`${project.title} product screenshot`}
                   fill
+                  quality={80}
                   sizes="(max-width: 1024px) 100vw, 58vw"
                   className="object-cover object-top"
                 />
@@ -84,6 +65,7 @@ export default function Projects() {
                     >
                       <ExternalLink size={16} aria-hidden />
                       Live
+                      <span className="sr-only"> (opens in a new tab)</span>
                     </a>
                   ) : null}
                   {project.githubUrl ? (
@@ -95,21 +77,17 @@ export default function Projects() {
                     >
                       <Github size={16} aria-hidden />
                       Code
+                      <span className="sr-only"> (opens in a new tab)</span>
                     </a>
                   ) : null}
                 </div>
               </div>
-            </motion.article>
+            </article>
           ))}
         </div>
 
         {more.length > 0 ? (
-          <motion.div
-            initial={false}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 1, y: 16 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-20 border-t border-border pt-12"
-          >
+          <div className="mt-20 border-t border-border pt-12">
             <h3 className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">
               More
             </h3>
@@ -120,9 +98,9 @@ export default function Projects() {
                   className="flex flex-col gap-3 py-5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8"
                 >
                   <div className="min-w-0">
-                    <p className="font-heading text-lg font-semibold text-foreground">
+                    <h4 className="font-heading text-lg font-semibold text-foreground">
                       {project.title}
-                    </p>
+                    </h4>
                     <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                       {project.description}
                     </p>
@@ -136,6 +114,7 @@ export default function Projects() {
                         className="font-medium text-foreground transition-colors hover:text-accent"
                       >
                         Live
+                        <span className="sr-only"> (opens in a new tab)</span>
                       </a>
                     ) : null}
                     {project.githubUrl ? (
@@ -146,13 +125,14 @@ export default function Projects() {
                         className="text-muted-foreground transition-colors hover:text-accent"
                       >
                         Code
+                        <span className="sr-only"> (opens in a new tab)</span>
                       </a>
                     ) : null}
                   </div>
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </div>
         ) : null}
       </div>
     </section>

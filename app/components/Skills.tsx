@@ -1,15 +1,7 @@
-'use client';
-
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef } from 'react';
 import { skills } from '@/data/skills';
 import SectionHeader from './SectionHeader';
 
 export default function Skills() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-
   const skillCategories = [
     {
       name: 'Frontend',
@@ -26,32 +18,17 @@ export default function Skills() {
   ];
 
   return (
-    <section
-      id="skills"
-      ref={ref}
-      className="bg-muted/50 px-4 py-24 sm:px-6 lg:px-8"
-    >
+    <section id="skills" className="bg-muted/50 px-4 py-24 sm:px-6 lg:px-8">
       <div className="container mx-auto max-w-6xl">
-        <motion.div
-          initial={false}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 1, y: 16 }}
-          transition={{ duration: 0.5 }}
-        >
-          <SectionHeader
-            eyebrow="Stack"
-            title="How I build"
-            subtitle="The tools I actually reach for when shipping a product."
-          />
-        </motion.div>
+        <SectionHeader
+          eyebrow="Stack"
+          title="How I build"
+          subtitle="The tools I actually reach for when shipping a product."
+        />
 
         <div className="grid gap-10 md:grid-cols-3 md:gap-12">
-          {skillCategories.map((category, categoryIndex) => (
-            <motion.div
-              key={category.name}
-              initial={false}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 1, y: 12 }}
-              transition={{ duration: 0.45, delay: 0.08 + categoryIndex * 0.06 }}
-            >
+          {skillCategories.map((category) => (
+            <div key={category.name}>
               <h3 className="font-mono text-xs uppercase tracking-[0.16em] text-accent">
                 {category.name}
               </h3>
@@ -65,7 +42,7 @@ export default function Skills() {
                   </li>
                 ))}
               </ul>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

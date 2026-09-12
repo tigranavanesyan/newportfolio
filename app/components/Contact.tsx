@@ -1,32 +1,27 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import SectionHeader from './SectionHeader';
 
 type SubmitStatus = 'idle' | 'sending' | 'success' | 'error';
 
 export default function Contact() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
   const [status, setStatus] = useState<SubmitStatus>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const statusRef = useRef<HTMLDivElement>(null);
+  const invalid = status === 'error';
+
+  useEffect(() => {
+    if (status === 'success' || status === 'error') {
+      statusRef.current?.focus();
+    }
+  }, [status]);
 
   return (
-    <section
-      id="contact"
-      ref={ref}
-      className="bg-background px-4 py-24 sm:px-6 lg:px-8"
-    >
+    <section id="contact" className="bg-background px-4 py-24 sm:px-6 lg:px-8">
       <div className="container mx-auto max-w-6xl">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-          <motion.div
-            initial={false}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 1, y: 16 }}
-            transition={{ duration: 0.5 }}
-            className="lg:col-span-5"
-          >
+          <div className="lg:col-span-5">
             <SectionHeader
               eyebrow="Contact"
               title="Tell me about a project"
@@ -38,13 +33,12 @@ export default function Contact() {
             >
               web.tigranavanesyan@gmail.com
             </a>
-          </motion.div>
+          </div>
 
-          <motion.form
-            initial={false}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 1, y: 16 }}
-            transition={{ duration: 0.5, delay: 0.08 }}
+          <form
             className="border border-border bg-card p-6 sm:p-8 lg:col-span-7"
+            aria-busy={status === 'sending'}
+            aria-describedby="form-status"
             onSubmit={async (e) => {
               e.preventDefault();
               setErrorMessage('');
@@ -73,7 +67,6 @@ export default function Contact() {
                 setErrorMessage('Failed to send message');
               }
             }}
-            aria-describedby="form-status"
           >
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div>
@@ -88,6 +81,8 @@ export default function Contact() {
                   id="name"
                   name="name"
                   autoComplete="name"
+                  aria-invalid={invalid || undefined}
+                  aria-describedby={invalid ? 'form-status' : undefined}
                   className="w-full rounded-sm border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-ring/40"
                   placeholder="Your name"
                   required
@@ -105,6 +100,8 @@ export default function Contact() {
                   id="email"
                   name="email"
                   autoComplete="email"
+                  aria-invalid={invalid || undefined}
+                  aria-describedby={invalid ? 'form-status' : undefined}
                   className="w-full rounded-sm border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-ring/40"
                   placeholder="you@example.com"
                   required
@@ -122,6 +119,8 @@ export default function Contact() {
                 id="message"
                 name="message"
                 rows={6}
+                aria-invalid={invalid || undefined}
+                aria-describedby={invalid ? 'form-status' : undefined}
                 className="w-full resize-y rounded-sm border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-ring/40"
                 placeholder="What are you building?"
                 required
@@ -130,7 +129,9 @@ export default function Contact() {
 
             <div
               id="form-status"
-              className="mt-4 min-h-6"
+              ref={statusRef}
+              tabIndex={-1}
+              className="mt-4 min-h-6 outline-none"
               role="status"
               aria-live="polite"
             >
@@ -149,11 +150,12 @@ export default function Contact() {
             <button
               type="submit"
               disabled={status === 'sending'}
-              className="mt-2 inline-flex min-h-12 items-center justify-center rounded-sm bg-accent px-7 py-3 text-sm font-semibold text-accent-foreground disabled:cursor-not-allowed disabled:opacity-60"
+              aria-busy={status === 'sending'}
+              className="mt-2 inline-flex min-h-12 items-center justify-center rounded-sm bg-accent px-7 py-3 text-sm font-medium text-accent-foreground disabled:cursor-not-allowed disabled:opacity-60"
             >
               {status === 'sending' ? 'Sending…' : 'Send message'}
             </button>
-          </motion.form>
+          </form>
         </div>
       </div>
     </section>

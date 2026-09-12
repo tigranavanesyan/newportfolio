@@ -55,6 +55,13 @@ html {
   html {
     scroll-behavior: auto;
   }
+
+  body,
+  header,
+  a,
+  button {
+    transition: none !important;
+  }
 }
 
 body {
