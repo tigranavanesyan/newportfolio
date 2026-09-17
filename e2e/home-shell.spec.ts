@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { instant } from '@next/playwright';
 
 const SHELL_MARKER = 'h1';
-const SHELL_TEXT = 'I design and ship web products end to end.';
+const SHELL_TEXT = "Hello, I'm";
 
 test.describe('instant initial load: home', () => {
   test('home shell is served', async ({ page, baseURL }) => {
